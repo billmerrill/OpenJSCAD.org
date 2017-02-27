@@ -1,4 +1,4 @@
-// == openjscad.js, originally written by Joost Nieuwenhuijse (MIT License)
+// == openjscad.js, originally written by Joost Nieuwenhuijse (MIT License
 //   few adjustments by Rene K. Mueller <spiritdude@gmail.com> for OpenJSCAD.org
 //
 // History:
@@ -512,7 +512,7 @@ OpenJsCad.Viewer.prototype = {
         if (this.solid.overlay) gl.enable(gl.DEPTH_TEST);
       }
     }
-  // draw the plate and the axis 
+  // draw the plate and the axis
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.begin(gl.LINES);
@@ -595,7 +595,7 @@ OpenJsCad.Viewer.prototype = {
     for(var j = 0; j < numpolygons; j++) {
       var polygon = polygons[j];
       var color = this.solid.color;  // default color
-  
+
       if(polygon.shared && polygon.shared.color) {
         color = polygon.shared.color;
       } else if(polygon.color) {
@@ -819,6 +819,7 @@ OpenJsCad.Processor = function(containerdiv, options) {
     useAsync: true,
     useSync:  true,
     viewer: {},
+    directParameters: {}
   };
 // apply all options found
   for (var x in this.opts) {
@@ -949,7 +950,7 @@ OpenJsCad.Processor.prototype = {
       this.containerdiv.parentElement.appendChild(this.selectdiv);
     }
     element = document.createElement("input");
-    element.setAttribute("type", "range"); 
+    element.setAttribute("type", "range");
     element.id = 'startRange';
     element.min = 0;
     element.max = 100;
@@ -963,7 +964,7 @@ OpenJsCad.Processor.prototype = {
     };
     this.selectdiv.appendChild(element);
     element = document.createElement("input");
-    element.setAttribute("type", "range"); 
+    element.setAttribute("type", "range");
     element.id = 'endRange';
     element.min = 0;
     element.max = 100;
@@ -1230,6 +1231,14 @@ OpenJsCad.Processor.prototype = {
   getParamValues: function()
   {
     var paramValues = {};
+    // wlm soon.rip hacks
+    if (Object.keys(this.opts.directParameters).length > 0) {
+      for (p in this.opts.directParameters) {
+        paramValues[p] = this.opts.directParameters[p];
+      }
+      return paramValues;
+    }
+
     for(var i = 0; i < this.paramControls.length; i++)
     {
       var control = this.paramControls[i];
